@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Felecidade & Sofio — 14 Agosto 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,300;0,400;1,300;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Great+Vibes&family=Montserrat:wght@200;300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --cream: #f4f7f5;
+  --warm-white: #f9fbf9;
+  --blush: #dde8df;
+  --green: #5f7a65;
+  --green-dark: #4a6050;
+  --green-light: #8fa894;
+  --green-faint: rgba(95,122,101,0.08);
+  --gold: #c4a45a;
+  --gold-light: #e8d8a8;
+  --dark: #141a15;
+  --charcoal: #1e2b20;
+  --text: #2a3a2d;
+  --muted: #6a8a6e;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color: transparent; }
+html { scroll-behavior:smooth; font-size:16px; }
+
+body {
+  background: var(--cream);
+  color: var(--text);
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 300;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ══ MUSIC BTN ══ */
+#music-btn {
+  position: fixed;
+  bottom: 20px; right: 20px;
+  z-index: 9999;
+  width: 52px; height: 52px;
+  border-radius: 50%;
+  background: var(--green);
+  border: 2px solid rgba(255,255,255,0.25);
+  color: #fff;
+  font-size: 20px;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 4px 24px rgba(95,122,101,0.5);
+  transition: all 0.3s;
+  touch-action: manipulation;
+}
+#music-btn:hover { background: var(--green-dark); transform: scale(1.08); }
+#music-btn.playing { animation: glowPulse 3s infinite; }
+@keyframes glowPulse {
+  0%,100% { box-shadow: 0 4px 24px rgba(95,122,101,0.5); }
+  50% { box-shadow: 0 4px 24px rgba(95,122,101,0.8), 0 0 0 8px rgba(95,122,101,0.15); }
+}
+
+/* ══ SPLASH SCREEN ══ */
+#splash {
+  position: fixed; inset: 0;
+  z-index: 99999;
+  background: var(--charcoal);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  text-align: center;
+  padding: 40px 32px;
+  cursor: pointer;
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+#splash.hide {
+  opacity: 0; transform: scale(1.04); pointer-events: none;
+}
+.splash-ring {
+  width: 100px; height: 100px;
+  border-radius: 50%;
+  border: 1px solid rgba(196,164,90,0.4);
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 32px;
+  animation: ringPulse 2.5s infinite;
+}
+@keyframes ringPulse {
+  0%,100% { box-shadow: 0 0 0 0 rgba(196,164,90,0.3); }
+  50% { box-shadow: 0 0 0 16px rgba(196,164,90,0); }
+}
+.splash-note { font-size: 40px; }
+.splash-names {
+  font-family: 'Great Vibes', cursive;
+  font-size: clamp(42px, 12vw, 72px);
+  color: #fff; line-height: 1.1;
+  margin-bottom: 8px;
+}
+.splash-amp {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: clamp(16px, 4vw, 24px);
+  color: var(--gold);
+  display: block; margin: 4px 0;
+}
+.splash-date {
+  font-size: clamp(10px, 2.5vw, 13px);
+  letter-spacing: 5px; text-transform: uppercase;
+  color: rgba(255,255,255,0.4);
+  margin-bottom: 48px;
+}
+.splash-cta {
+  display: flex; flex-direction: column; align-items: center; gap: 12px;
+}
+.splash-btn {
+  background: var(--green);
+  color: #fff;
+  border: none;
+  padding: 16px 40px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: clamp(10px, 2.5vw, 12px);
+  letter-spacing: 4px; text-transform: uppercase;
+  cursor: pointer;
+  border-radius: 50px;
+  display: flex; align-items: center; gap: 10px;
+  box-shadow: 0 8px 32px rgba(95,122,101,0.4);
+  animation: btnPulse 2s infinite;
+}
+@keyframes btnPulse {
+  0%,100% { transform: scale(1); }
+  50% { transform: scale(1.04); }
+}
+.splash-hint {
+  font-size: clamp(9px, 2vw, 11px);
+  letter-spacing: 2px; text-transform: uppercase;
+  color: rgba(255,255,255,0.2);
+}
+
+/* ══ PETALS ══ */
+.petal {
+  position: fixed; pointer-events: none; z-index: 0;
+  font-size: 9px; opacity: 0;
+  animation: fallPetal linear infinite;
+}
+@keyframes fallPetal {
+  0% { opacity:0.5; transform: translateY(-10px) rotate(0deg); }
+  100% { opacity:0; transform: translateY(102vh) rotate(720deg); }
+}
+
+/* ══ HERO ══ */
+#hero {
+  position: relative;
+  min-height: 100svh;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  overflow: hidden;
+  background: var(--charcoal);
+}
+.hero-bg {
+  position: absolute; inset: 0;
+  background-image: url('assets/main.jpeg'); /* ← substitua pelo caminho da foto principal */
+  background-size: cover;
+  background-position: center 20%;
+  opacity: 0.3;
+}
+.hero-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(180deg,
+    rgba(26,20,16,0.2) 0%,
+    rgba(26,20,16,0.55) 50%,
+    rgba(26,20,16,0.92) 100%);
+}
+.hero-content {
+  position: relative; z-index: 2;
+  text-align: center;
+  padding: clamp(80px,15vw,120px) 24px clamp(60px,10vw,80px);
+  width: 100%; max-width: 600px;
+  margin: 0 auto;
+}
+.hero-tag {
+  display: inline-block;
+  font-size: clamp(8px,2vw,10px);
+  letter-spacing: 6px; text-transform: uppercase;
+  color: var(--gold);
+  border: 1px solid rgba(196,164,90,0.35);
+  padding: 7px 20px;
+  margin-bottom: clamp(32px,6vw,52px);
+  opacity: 0; animation: fadeUp 1s 0.2s forwards;
+}
+.hero-names {
+  font-family: 'Great Vibes', cursive;
+  font-size: clamp(48px,14vw,96px);
+  color: #fff; line-height: 1.05;
+  text-shadow: 0 4px 32px rgba(0,0,0,0.4);
+  opacity: 0; animation: fadeUp 1.2s 0.5s forwards;
+}
+.hero-amp {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: clamp(18px,5vw,32px);
+  color: var(--gold);
+  display: block; margin: 6px 0;
+  opacity: 0; animation: fadeUp 1s 0.8s forwards;
+}
+.hero-rule {
+  width: 80px; height: 1px;
+  background: linear-gradient(to right, transparent, var(--gold), transparent);
+  margin: clamp(20px,4vw,32px) auto;
+  opacity: 0; animation: fadeUp 1s 1s forwards;
+}
+.hero-date {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(13px,3.5vw,20px);
+  letter-spacing: 5px; text-transform: uppercase;
+  color: rgba(255,255,255,0.82);
+  opacity: 0; animation: fadeUp 1s 1.2s forwards;
+}
+.hero-verse {
+  margin-top: clamp(20px,4vw,32px);
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: clamp(12px,3vw,15px);
+  color: rgba(255,255,255,0.48);
+  line-height: 1.9;
+  opacity: 0; animation: fadeUp 1s 1.4s forwards;
+}
+.hero-scroll {
+  margin-top: clamp(40px,8vw,64px);
+  display: flex; flex-direction: column; align-items: center; gap: 10px;
+  opacity: 0; animation: fadeUp 1s 2s forwards;
+}
+.hero-scroll span { font-size: 9px; letter-spacing: 5px; text-transform: uppercase; color: rgba(255,255,255,0.3); }
+.scroll-bar { width:1px; height:44px; background: linear-gradient(to bottom, var(--gold), transparent); animation: scrollBlink 2.5s infinite; }
+@keyframes scrollBlink { 0%,100%{opacity:1} 50%{opacity:0.2} }
+@keyframes fadeUp {
+  from { opacity:0; transform:translateY(22px); }
+  to { opacity:1; transform:translateY(0); }
+}
+
+/* ══ SECTIONS ══ */
+.sep { text-align:center; padding:16px 0; color:var(--gold); font-size:16px; letter-spacing:14px; opacity:0.4; }
+
+.s-wrap { max-width:680px; margin:0 auto; padding: clamp(60px,10vw,100px) clamp(20px,5vw,40px); }
+.s-wrap.full { max-width:100%; padding-left:0; padding-right:0; }
+.eyebrow {
+  font-size: clamp(8px,2vw,9px);
+  letter-spacing:6px; text-transform:uppercase;
+  color:var(--gold); display:block; margin-bottom:14px;
+}
+.s-title {
+  font-family:'Playfair Display',serif;
+  font-size: clamp(28px,7vw,50px);
+  font-weight:300; font-style:italic;
+  color:var(--charcoal); line-height:1.2; margin-bottom:18px;
+}
+.s-title.light { color:#fff; }
+.g-rule { width:40px; height:1px; background:var(--gold); margin-bottom:clamp(32px,5vw,48px); }
+.g-rule.center { margin-left:auto; margin-right:auto; margin-bottom:clamp(32px,5vw,48px); }
+
+/* ══ REVEAL ══ */
+.rv { opacity:0; transform:translateY(32px); transition: opacity 0.85s ease, transform 0.85s ease; }
+.rv.d1 { transition-delay:0.1s; }
+.rv.d2 { transition-delay:0.2s; }
+.rv.d3 { transition-delay:0.3s; }
+.rv.on { opacity:1; transform:none; }
+
+/* ══ COUNTDOWN ══ */
+#countdown { background:var(--charcoal); padding: clamp(60px,10vw,100px) 20px; text-align:center; }
+.cd-grid {
+  display:flex; justify-content:center; align-items:flex-start;
+  gap: clamp(8px,3vw,36px); flex-wrap:nowrap;
+  margin-top:0;
+}
+.cd-item { display:flex; flex-direction:column; align-items:center; }
+.cd-num {
+  font-family:'Cormorant Garamond',serif;
+  font-size: clamp(44px,12vw,80px);
+  font-weight:300; color:#fff; line-height:1;
+  min-width: clamp(52px,14vw,100px);
+  text-align:center;
+}
+.cd-lbl { font-size:clamp(7px,1.8vw,9px); letter-spacing:3px; text-transform:uppercase; color:var(--gold); margin-top:10px; }
+.cd-sep { font-family:'Cormorant Garamond',serif; font-size:clamp(36px,9vw,64px); color:rgba(196,164,90,0.3); line-height:1; padding-top:6px; }
+
+/* ══ GALLERY ══ */
+#gallery { background:var(--warm-white); padding: clamp(60px,10vw,100px) 0; text-align:center; }
+#gallery .s-wrap { padding-bottom:0; }
+.g-main {
+  position:relative; width:100%;
+  max-width: clamp(300px, 85vw, 440px);
+  margin: clamp(32px,5vw,52px) auto 0;
+  aspect-ratio: 3/4;
+  overflow:hidden;
+  box-shadow: 0 24px 64px rgba(0,0,0,0.18);
+}
+.g-slide { position:absolute; inset:0; opacity:0; transition:opacity 1.2s ease; }
+.g-slide.on { opacity:1; }
+.g-slide img { width:100%; height:100%; object-fit:cover; object-position:center top; display:block; }
+.g-dots { display:flex; gap:8px; justify-content:center; margin-top:20px; padding:0 20px; }
+.gdot { flex:1; max-width:28px; height:1px; background:var(--blush); cursor:pointer; transition:all 0.4s; }
+.gdot.on { background:var(--gold); max-width:44px; }
+.g-thumbs {
+  display:flex; gap:8px; justify-content:center;
+  margin: 16px 20px 0; overflow-x:auto; padding-bottom:8px;
+  -webkit-overflow-scrolling:touch;
+  scrollbar-width:none;
+}
+.g-thumbs::-webkit-scrollbar { display:none; }
+.gth {
+  width:clamp(44px,11vw,64px); height:clamp(54px,13vw,78px);
+  flex-shrink:0; overflow:hidden; cursor:pointer;
+  opacity:0.4; border:1px solid transparent; transition:all 0.3s;
+}
+.gth.on { opacity:1; border-color:var(--gold); }
+.gth img { width:100%; height:100%; object-fit:cover; object-position:center top; display:block; }
+
+/* ══ MESSAGE ══ */
+#message { background:var(--cream); }
+.msg-card {
+  padding: clamp(36px,6vw,56px) clamp(24px,5vw,48px);
+  background:var(--warm-white);
+  border:1px solid var(--gold-light);
+  position:relative; margin-top:0;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.05);
+}
+.msg-card::before {
+  content:'❝';
+  position:absolute; top:-22px; left:50%; transform:translateX(-50%);
+  font-size:48px; color:var(--gold); line-height:1;
+  font-family:'Cormorant Garamond',serif;
+}
+.msg-text {
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(16px,3.5vw,20px);
+  font-style:italic; line-height:2; color:var(--text);
+}
+.msg-sig {
+  margin-top:28px;
+  font-family:'Great Vibes',cursive;
+  font-size:clamp(28px,6vw,38px);
+  color:var(--green);
+}
+
+/* ══ PROGRAM ══ */
+#program { background:var(--charcoal); padding: clamp(60px,10vw,100px) clamp(20px,5vw,40px); }
+.prog-inner { max-width:600px; margin:0 auto; text-align:center; }
+.tl { display:flex; flex-direction:column; align-items:flex-start; text-align:left; max-width:480px; margin:0 auto; }
+.tl-item { display:flex; gap:clamp(16px,4vw,28px); position:relative; width:100%; }
+.tl-item:not(:last-child)::after {
+  content:''; position:absolute;
+  left:clamp(13px,3vw,17px); top:clamp(36px,8vw,44px);
+  width:1px; height:calc(100% - 8px);
+  background:linear-gradient(to bottom, rgba(196,164,90,0.35), transparent);
+}
+.tl-dot {
+  flex-shrink:0;
+  width:clamp(28px,7vw,36px); height:clamp(28px,7vw,36px);
+  border-radius:50%; border:1px solid var(--gold);
+  display:flex; align-items:center; justify-content:center;
+  color:var(--gold); font-size:clamp(10px,2.5vw,13px);
+  background:var(--charcoal); margin-top:4px;
+}
+.tl-body { padding-bottom:clamp(28px,5vw,40px); }
+.tl-time { font-size:clamp(8px,2vw,10px); letter-spacing:4px; color:var(--gold); text-transform:uppercase; display:block; margin-bottom:5px; }
+.tl-name { font-family:'Playfair Display',serif; font-size:clamp(16px,4vw,20px); color:#fff; font-style:italic; margin-bottom:5px; }
+.tl-desc { font-size:clamp(11px,2.5vw,13px); color:rgba(255,255,255,0.4); line-height:1.8; }
+
+/* ══ LOCATIONS ══ */
+#locations { background:var(--warm-white); padding: clamp(60px,10vw,100px) clamp(20px,5vw,40px); text-align:center; }
+.loc-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; max-width:640px; margin:0 auto; }
+@media(max-width:480px) { .loc-grid { grid-template-columns:1fr; } }
+.loc-card {
+  display:block; text-decoration:none;
+  background:var(--charcoal); overflow:hidden;
+  transition:transform 0.3s; border:1px solid rgba(196,164,90,0.15);
+}
+.loc-card:active { transform:scale(0.98); }
+.loc-icon { height:clamp(72px,15vw,100px); display:flex; align-items:center; justify-content:center; font-size:clamp(28px,7vw,36px); background:rgba(196,164,90,0.07); border-bottom:1px solid rgba(196,164,90,0.15); }
+.loc-body { padding:clamp(16px,4vw,24px); text-align:left; }
+.loc-time { font-size:clamp(7px,1.8vw,9px); letter-spacing:4px; text-transform:uppercase; color:var(--gold); display:block; margin-bottom:6px; }
+.loc-name { font-family:'Playfair Display',serif; font-size:clamp(14px,3.5vw,17px); font-style:italic; color:#fff; margin-bottom:5px; line-height:1.3; }
+.loc-addr { font-size:clamp(10px,2.5vw,12px); color:rgba(255,255,255,0.3); line-height:1.6; }
+.loc-pin { float:right; color:var(--gold); font-size:clamp(16px,4vw,20px); }
+
+/* ══ RSVP ══ */
+#rsvp { background:var(--cream); padding: clamp(60px,10vw,100px) clamp(20px,5vw,40px) clamp(80px,14vw,120px); }
+.rsvp-inner { max-width:560px; margin:0 auto; text-align:center; }
+.rsvp-card {
+  background:var(--warm-white);
+  border:1px solid var(--gold-light);
+  padding: clamp(32px,6vw,52px) clamp(20px,5vw,40px);
+  box-shadow: 0 16px 48px rgba(0,0,0,0.06);
+  margin-top:0;
+}
+.rsvp-intro {
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(15px,3.5vw,19px);
+  font-style:italic; line-height:1.9;
+  color:var(--text); margin-bottom:clamp(28px,5vw,40px);
+}
+
+/* FORM */
+.rsvp-form { display:flex; flex-direction:column; gap:clamp(12px,3vw,16px); text-align:left; }
+.f-group { display:flex; flex-direction:column; gap:6px; }
+.f-label { font-size:clamp(9px,2vw,10px); letter-spacing:3px; text-transform:uppercase; color:var(--muted); }
+.f-input, .f-select, .f-textarea {
+  width:100%;
+  padding: clamp(12px,3vw,15px) clamp(14px,3vw,18px);
+  background: var(--cream);
+  border: 1px solid var(--gold-light);
+  color: var(--text);
+  font-family:'Montserrat',sans-serif;
+  font-size:clamp(13px,3vw,15px);
+  font-weight:300;
+  outline:none;
+  border-radius:0;
+  -webkit-appearance:none;
+  appearance:none;
+  transition: border-color 0.3s;
+}
+.f-input:focus, .f-select:focus, .f-textarea:focus {
+  border-color: var(--green);
+}
+.f-select {
+  background-image: url("assets/main.jpeg");
+  background-repeat:no-repeat;
+  background-position: right 16px center;
+  padding-right:44px;
+  cursor:pointer;
+}
+.f-textarea { resize:vertical; min-height:90px; line-height:1.6; }
+.f-row { display:grid; grid-template-columns:1fr 1fr; gap:clamp(10px,2vw,14px); }
+@media(max-width:400px) { .f-row { grid-template-columns:1fr; } }
+
+.btn-send {
+  margin-top:clamp(12px,3vw,20px);
+  display:flex; align-items:center; justify-content:center; gap:10px;
+  background:var(--green);
+  color:#fff;
+  padding: clamp(16px,4vw,18px) clamp(24px,5vw,36px);
+  font-family:'Montserrat',sans-serif;
+  font-size:clamp(11px,2.5vw,13px);
+  font-weight:400; letter-spacing:3px; text-transform:uppercase;
+  border:none; cursor:pointer; width:100%;
+  transition:all 0.3s; touch-action:manipulation;
+}
+.btn-send:hover { background:var(--green-dark); transform:translateY(-2px); box-shadow:0 8px 28px rgba(95,122,101,0.35); }
+.btn-send:active { transform:scale(0.98); }
+.btn-send svg { flex-shrink:0; }
+
+.rsvp-note { margin-top:16px; font-size:clamp(9px,2vw,11px); letter-spacing:2px; text-transform:uppercase; color:var(--muted); text-align:center; }
+
+/* success state */
+.rsvp-success {
+  display:none; flex-direction:column; align-items:center;
+  gap:16px; padding:20px 0;
+}
+.rsvp-success.show { display:flex; }
+.success-icon { font-size:48px; }
+.success-title {
+  font-family:'Playfair Display',serif;
+  font-size:clamp(22px,5vw,28px); font-style:italic;
+  color:var(--green);
+}
+.success-text { font-family:'Cormorant Garamond',serif; font-size:clamp(15px,3vw,18px); font-style:italic; color:var(--muted); line-height:1.8; }
+
+/* ══ FOOTER ══ */
+footer { background:var(--dark); padding: clamp(48px,8vw,72px) 24px; text-align:center; }
+.footer-names { font-family:'Great Vibes',cursive; font-size:clamp(36px,10vw,52px); color:var(--gold); display:block; margin-bottom:14px; }
+.footer-sub { font-size:clamp(8px,2vw,10px); letter-spacing:3px; text-transform:uppercase; color:rgba(255,255,255,0.2); line-height:2; }
+</style>
+</head>
+<body>
+
+<audio id="bg-music" loop>
+  <source src="assets/Instrumental.mp3" type="audio/mpeg">
+</audio>
+<button id="music-btn" onclick="toggleMusic()" title="Música">♪</button>
+
+<!-- ══ SPLASH ══ -->
+<div id="splash" onclick="enterSite()">
+  <div class="splash-ring">
+    <span class="splash-note">🎵</span>
+  </div>
+  <div class="splash-names">
+    Felecidade Langa
+    <span class="splash-amp">&amp;</span>
+    Sofio Chilaúle
+  </div>
+  <div class="splash-date">14 · Agosto · 2026</div>
+  <div class="splash-cta">
+    <button class="splash-btn" onclick="enterSite()">
+      <span>▶</span> Abrir Convite
+    </button>
+    <span class="splash-hint">Com música 🎶</span>
+  </div>
+</div>
+
+<!-- ══ HERO ══ -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <span class="hero-tag">Convite de Casamento</span>
+    <div class="hero-names">
+      Felecidade Langa
+      <span class="hero-amp">&amp;</span>
+      Sofio Chilaúle
+    </div>
+    <div class="hero-rule"></div>
+    <div class="hero-date">14 · Agosto · 2026 · Xai Xai</div>
+    <div class="hero-verse">
+      "Um pode ser vencido, mas juntos de mãos dadas com Deus<br>
+      poderemos resistir a tudo."<br>
+      <span style="font-size:0.85em;letter-spacing:1px;">— Eclesiastes 4:12</span>
+    </div>
+    <div class="hero-scroll">
+      <span>Descubra</span>
+      <div class="scroll-bar"></div>
+    </div>
+  </div>
+</section>
+
+<div class="sep">· · ✦ · ·</div>
+
+<!-- ══ COUNTDOWN ══ -->
+<section id="countdown">
+  <div class="rv" style="text-align:center;">
+    <span class="eyebrow">Falta apenas</span>
+    <h2 class="s-title light">O Grande Dia</h2>
+    <div class="g-rule center"></div>
+  </div>
+  <div class="cd-grid rv">
+    <div class="cd-item"><div class="cd-num" id="cd-d">000</div><div class="cd-lbl">Dias</div></div>
+    <div class="cd-sep">·</div>
+    <div class="cd-item"><div class="cd-num" id="cd-h">00</div><div class="cd-lbl">Horas</div></div>
+    <div class="cd-sep">·</div>
+    <div class="cd-item"><div class="cd-num" id="cd-m">00</div><div class="cd-lbl">Min</div></div>
+    <div class="cd-sep">·</div>
+    <div class="cd-item"><div class="cd-num" id="cd-s">00</div><div class="cd-lbl">Seg</div></div>
+  </div>
+</section>
+
+<div class="sep" style="background:var(--charcoal);color:var(--gold);">· · ✦ · ·</div>
+
+<!-- ══ GALLERY ══ -->
+<section id="gallery">
+  <div class="s-wrap" style="text-align:center;padding-bottom:0;">
+    <div class="rv">
+      <span class="eyebrow">A nossa história</span>
+      <h2 class="s-title">Galeria do Casal</h2>
+      <div class="g-rule center"></div>
+    </div>
+  </div>
+  <div class="g-main rv">
+    <!-- GALERIA: substitua cada src="" pelo caminho da sua foto, ex: src="foto1.jpg" -->
+    <div class="g-slide on"><img src="assets/image8.jpeg" alt="Felecidade e Sofio" loading="lazy"><!-- FOTO 1 --></div>
+    <div class="g-slide"><img src="assets/image.jpeg" alt="Felecidade e Sofio" loading="lazy"><!-- FOTO 2 --></div>
+    <div class="g-slide"><img src="assets/image2.jpeg" alt="Felecidade e Sofio" loading="lazy"><!-- FOTO 3 --></div>
+    <div class="g-slide"><img src="assets/image3.jpeg" alt="Felecidade e Sofio" loading="lazy"><!-- FOTO 4 --></div>
+    <div class="g-slide"><img src="assets/image4.jpeg" alt="Felecidade e Sofio" loading="lazy"><!-- FOTO 5 --></div>
+    <div class="g-slide"><img src="assets/image5.jpeg" alt="Felecidade e Sofio" loading="lazy"><!-- FOTO 6 --></div>
+    <div class="g-slide"><img src="assets/image7.jpeg" alt="Felecidade e Sofio" loading="lazy"><!-- FOTO 7 --></div>
+  </div>
+  <div class="g-dots" id="gdots">
+    <div class="gdot on" onclick="goSlide(0)"></div>
+    <div class="gdot" onclick="goSlide(1)"></div>
+    <div class="gdot" onclick="goSlide(2)"></div>
+    <div class="gdot" onclick="goSlide(3)"></div>
+    <div class="gdot" onclick="goSlide(4)"></div>
+    <div class="gdot" onclick="goSlide(5)"></div>
+    <div class="gdot" onclick="goSlide(6)"></div>
+  </div>
+  <div class="g-thumbs" id="gthumbs">
+    <!-- MINIATURAS: use os mesmos caminhos das fotos acima, na mesma ordem -->
+    <div class="gth on" onclick="goSlide(0)"><img src="assets/image8.jpeg" alt="Noivos Felecidade & Sofio"></div><!-- FOTO 1 -->
+    <div class="gth" onclick="goSlide(1)"><img src="assets/image.jpeg" alt="Noivos Felecidade & Sofio"></div><!-- FOTO 2 -->
+    <div class="gth" onclick="goSlide(2)"><img src="assets/image2.jpeg" alt="Noivos Felecidade & Sofio"></div><!-- FOTO 3 -->
+    <div class="gth" onclick="goSlide(3)"><img src="assets/image3.jpeg" alt="Noivos Felecidade & Sofio"></div><!-- FOTO 4 -->
+    <div class="gth" onclick="goSlide(4)"><img src="assets/image4.jpeg" alt="Noivos Felecidade & Sofio"></div><!-- FOTO 5 -->
+    <div class="gth" onclick="goSlide(5)"><img src="assets/image5.jpeg" alt="Noivos Felecidade & Sofio"></div><!-- FOTO 6 -->
+    <div class="gth" onclick="goSlide(6)"><img src="assets/image7.jpeg" alt="Noivos Felecidade & Sofio"></div><!-- FOTO 7 -->
+  </div>
+  <div style="padding-bottom:clamp(40px,8vw,80px);"></div>
+</section>
+
+<div class="sep">· · ✦ · ·</div>
+
+<!-- ══ MESSAGE ══ -->
+<section id="message">
+  <div class="s-wrap">
+    <div class="rv">
+      <span class="eyebrow">Palavras do coração</span>
+      <h2 class="s-title">Mensagem dos Noivos</h2>
+      <div class="g-rule"></div>
+    </div>
+    <div class="msg-card rv">
+      <p class="msg-text">
+        Com o coração transbordando de gratidão e alegria, queremos partilhar convosco
+        este momento que tanto sonhámos. A vossa presença não é apenas um detalhe —
+        é parte essencial da nossa história.<br><br>
+        Cada abraço, cada sorriso e cada lágrima de felicidade que partilharmos juntos
+        neste dia ficarão gravados para sempre na memória do nosso amor. Obrigado por
+        fazerem parte da nossa vida e por caminharem connosco até aqui.
+      </p>
+      <div class="msg-sig">Felecidade &amp; Sofio 💛</div>
+    </div>
+  </div>
+</section>
+
+<div class="sep">· · ✦ · ·</div>
+
+<!-- ══ PROGRAM ══ -->
+<section id="program">
+  <div class="prog-inner">
+    <div class="rv">
+      <span class="eyebrow">Tudo o que precisam saber</span>
+      <h2 class="s-title light">Programa do Dia</h2>
+      <div class="g-rule center"></div>
+    </div>
+    <div class="tl">
+      <div class="tl-item rv">
+        <div class="tl-dot">⛪</div>
+        <div class="tl-body">
+          <span class="tl-time">10h00</span>
+          <div class="tl-name">Cerimónia Religiosa</div>
+          <div class="tl-desc">Paróquia São João Baptista, Xai Xai.<br>Por favor, chegue com 15 minutos de antecedência.</div>
+        </div>
+      </div>
+      <div class="tl-item rv d1">
+        <div class="tl-dot">🏛️</div>
+        <div class="tl-body">
+          <span class="tl-time">12h30</span>
+          <div class="tl-name">Recepção &amp; Cerimónia Civil</div>
+          <div class="tl-desc">Salão de Eventos Assimina.<br>À entrada apresente o seu convite.</div>
+        </div>
+      </div>
+      <div class="tl-item rv d2">
+        <div class="tl-dot">📸</div>
+        <div class="tl-body">
+          <span class="tl-time">13h00</span>
+          <div class="tl-name">Sessão Fotográfica</div>
+          <div class="tl-desc">Momento especial para registar memórias com os noivos e os vossos entes queridos.</div>
+        </div>
+      </div>
+      <div class="tl-item rv d3">
+        <div class="tl-dot">🥂</div>
+        <div class="tl-body">
+          <span class="tl-time">14h00</span>
+          <div class="tl-name">Copo de Água &amp; Celebração</div>
+          <div class="tl-desc">Convite válido para 02 pessoas<br><em style="color:rgba(255,255,255,0.25);">Não extensivo a crianças</em></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="sep" style="background:var(--charcoal);color:var(--gold);">· · ✦ · ·</div>
+
+<!-- ══ LOCATIONS ══ -->
+<section id="locations">
+  <div style="max-width:680px;margin:0 auto;text-align:center;padding:0 clamp(20px,5vw,40px);">
+    <div class="rv">
+      <span class="eyebrow">Como chegar</span>
+      <h2 class="s-title">Locais do Evento</h2>
+      <div class="g-rule center"></div>
+    </div>
+    <div class="loc-grid">
+      <a class="loc-card rv" href="https://maps.google.com/?q=Paroquia+Sao+Joao+Baptista+Xai+Xai+Mozambique" target="_blank" rel="noopener">
+        <div class="loc-icon">⛪</div>
+        <div class="loc-body">
+          <span class="loc-pin">📍</span>
+          <span class="loc-time">Cerimónia · 10h00</span>
+          <div class="loc-name">Paróquia São João Baptista</div>
+          <div class="loc-addr">Xai Xai, Moçambique<br>Toque para ver no mapa</div>
+        </div>
+      </a>
+      <a class="loc-card rv d1" href="https://maps.google.com/?q=Xai+Xai+Mozambique" target="_blank" rel="noopener">
+        <div class="loc-icon">🥂</div>
+        <div class="loc-body">
+          <span class="loc-pin">📍</span>
+          <span class="loc-time">Recepção · 12h30</span>
+          <div class="loc-name">Salão de Eventos Assimina</div>
+          <div class="loc-addr">Cidade de Xai Xai<br>Toque para ver no mapa</div>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<div class="sep">· · ✦ · ·</div>
+
+<!-- ══ RSVP ══ -->
+<section id="rsvp">
+  <div class="rsvp-inner">
+    <div class="rv">
+      <span class="eyebrow">A vossa presença importa</span>
+      <h2 class="s-title">Confirmar Presença</h2>
+      <div class="g-rule center"></div>
+    </div>
+
+    <div class="rsvp-card rv">
+      <p class="rsvp-intro">
+        Para melhor organização deste dia tão especial, pedimos que confirmem
+        a vossa presença até <strong>31 de Julho de 2026</strong>. Preencham o
+        formulário abaixo — será enviada uma mensagem directa pelo WhatsApp.
+      </p>
+
+      <!-- FORM -->
+      <div class="rsvp-form" id="rsvp-form">
+        <div class="f-group">
+          <label class="f-label">O seu nome completo</label>
+          <input class="f-input" id="f-nome" type="text" placeholder="Ex: Maria da Silva" autocomplete="name">
+        </div>
+
+        <div class="f-row">
+          <div class="f-group">
+            <label class="f-label">Nº de convidados</label>
+            <select class="f-select" id="f-num">
+              <option value="1 pessoa">1 pessoa</option>
+              <option value="2 pessoas" selected>2 pessoas</option>
+            </select>
+          </div>
+          <div class="f-group">
+            <label class="f-label">Confirmação</label>
+            <select class="f-select" id="f-conf">
+              <option value="✅ Confirmo presença">✅ Confirmo</option>
+              <option value="❌ Não poderei estar presente">❌ Não vou</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="f-group">
+          <label class="f-label">Mensagem aos noivos (opcional)</label>
+          <textarea class="f-textarea" id="f-msg" placeholder="Uma palavra de carinho para Felecidade e Sofio..."></textarea>
+        </div>
+
+        <button class="btn-send" onclick="enviarRSVP()">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+          </svg>
+          Enviar pelo WhatsApp
+        </button>
+        <p class="rsvp-note">Prazo · 31 de Julho de 2026</p>
+      </div>
+
+      <!-- SUCCESS -->
+      <div class="rsvp-success" id="rsvp-success">
+        <div class="success-icon">💌</div>
+        <div class="success-title">Obrigado!</div>
+        <p class="success-text">A sua confirmação foi enviada.<br>Os noivos estão à vossa espera!</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ FOOTER ══ -->
+<footer>
+  <span class="footer-names">Felecidade &amp; Sofio</span>
+  <p class="footer-sub">
+    14 · Agosto · 2026 · Xai Xai, Moçambique<br>
+    Com a bênção de Deus e dos nossos pais
+  </p>
+</footer>
+
+<script>
+// ── PETALS ──
+const emojis=['🌸','🌺','🌷','✿'];
+for(let i=0;i<14;i++){
+  const p=document.createElement('div');
+  p.className='petal';
+  p.textContent=emojis[i%emojis.length];
+  p.style.cssText=`left:${Math.random()*100}vw;font-size:${8+Math.random()*8}px;animation-duration:${10+Math.random()*14}s;animation-delay:${Math.random()*12}s;`;
+  document.body.appendChild(p);
+}
+
+// ── MUSIC + SPLASH ──
+const music=document.getElementById('bg-music');
+const btn=document.getElementById('music-btn');
+let playing=false;
+
+function enterSite(){
+  const splash=document.getElementById('splash');
+  splash.classList.add('hide');
+  setTimeout(()=>splash.remove(),900);
+  // arranca música após interação do utilizador — browsers permitem
+  music.volume=0;
+  music.play().then(()=>{
+    btn.textContent='♫'; btn.classList.add('playing'); playing=true;
+    // fade in suave do volume
+    let v=0;
+    const fade=setInterval(()=>{
+      v=Math.min(v+0.05,1);
+      music.volume=v;
+      if(v>=1)clearInterval(fade);
+    },150);
+  }).catch(()=>{});
+}
+
+function toggleMusic(){
+  if(playing){music.pause();btn.textContent='♪';btn.classList.remove('playing');playing=false;}
+  else{music.play().catch(()=>{});btn.textContent='♫';btn.classList.add('playing');playing=true;}
+}
+
+// ── COUNTDOWN ──
+function tick(){
+  const diff=new Date('2026-08-14T10:00:00')-new Date();
+  if(diff<=0)return;
+  document.getElementById('cd-d').textContent=String(Math.floor(diff/86400000)).padStart(3,'0');
+  document.getElementById('cd-h').textContent=String(Math.floor(diff%86400000/3600000)).padStart(2,'0');
+  document.getElementById('cd-m').textContent=String(Math.floor(diff%3600000/60000)).padStart(2,'0');
+  document.getElementById('cd-s').textContent=String(Math.floor(diff%60000/1000)).padStart(2,'0');
+}
+tick();setInterval(tick,1000);
+
+// ── GALLERY ──
+const slides=document.querySelectorAll('.g-slide');
+const dots=document.querySelectorAll('.gdot');
+const thumbs=document.querySelectorAll('.gth');
+let cur=0,timer,galleryVisible=false;
+
+new IntersectionObserver(entries=>{
+  galleryVisible=entries[0].isIntersecting;
+  if(!galleryVisible){clearInterval(timer);timer=null;}
+  else if(!timer){timer=setInterval(()=>goSlide((cur+1)%slides.length),5000);}
+},{threshold:0.2}).observe(document.getElementById('gallery'));
+
+function goSlide(n){
+  slides[cur].classList.remove('on');dots[cur].classList.remove('on');thumbs[cur].classList.remove('on');
+  cur=n;
+  slides[cur].classList.add('on');dots[cur].classList.add('on');thumbs[cur].classList.add('on');
+  const th=thumbs[cur];
+  const ct=th.parentElement;
+  ct.scrollLeft=th.offsetLeft-ct.offsetWidth/2+th.offsetWidth/2;
+}
+timer=setInterval(()=>goSlide((cur+1)%slides.length),5000);
+
+// swipe gallery — only horizontal, never blocks vertical scroll
+let tx=0,ty=0;
+const gm=document.querySelector('.g-main');
+gm.addEventListener('touchstart',e=>{tx=e.touches[0].clientX;ty=e.touches[0].clientY;},{passive:true});
+gm.addEventListener('touchend',e=>{
+  const dx=e.changedTouches[0].clientX-tx;
+  const dy=e.changedTouches[0].clientY-ty;
+  // only act if horizontal movement is dominant and significant
+  if(Math.abs(dx)>50&&Math.abs(dx)>Math.abs(dy)*1.5)
+    goSlide(dx<0?(cur+1)%slides.length:(cur-1+slides.length)%slides.length);
+},{passive:true});
+
+// ── REVEAL ──
+const ios=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('on');}),{threshold:0.1});
+document.querySelectorAll('.rv').forEach(el=>ios.observe(el));
+
+// ── RSVP ──
+function enviarRSVP(){
+  const nome=document.getElementById('f-nome').value.trim();
+  const num=document.getElementById('f-num').value;
+  const conf=document.getElementById('f-conf').value;
+  const msg=document.getElementById('f-msg').value.trim();
+  if(!nome){document.getElementById('f-nome').focus();document.getElementById('f-nome').style.borderColor='var(--green)';return;}
+  
+  // SUBSTITUA pelo número real: 258XXXXXXXXX
+  const tel='258XXXXXXXXX';
+  
+  let txt=`Olá! 👋%0A%0A${conf}%0A%0A*Nome:* ${encodeURIComponent(nome)}%0A*Convidados:* ${encodeURIComponent(num)}%0A*Evento:* Casamento de Felecidade %26 Sofio%0A*Data:* 14 de Agosto de 2026`;
+  if(msg)txt+=`%0A%0A*Mensagem:* ${encodeURIComponent(msg)}`;
+  
+  window.open(`https://wa.me/${tel}?text=${txt}`,'_blank');
+  document.getElementById('rsvp-form').style.display='none';
+  document.getElementById('rsvp-success').classList.add('show');
+}
+</script>
+</body>
+</html>
