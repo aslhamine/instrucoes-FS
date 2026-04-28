@@ -469,7 +469,7 @@ footer { background:var(--dark); padding: clamp(48px,8vw,72px) 24px; text-align:
 <body>
 
 <audio id="bg-music" loop>
-  <source src="assets/Instrumental.mp3" type="audio/mpeg">
+  <source src="assets/stuck.mp3" type="audio/mpeg">
 </audio>
 <button id="music-btn" onclick="toggleMusic()" title="Música">♪</button>
 
@@ -636,7 +636,7 @@ footer { background:var(--dark); padding: clamp(48px,8vw,72px) 24px; text-align:
         <div class="tl-body">
           <span class="tl-time">13h00</span>
           <div class="tl-name">Sessão Fotográfica</div>
-          <div class="tl-desc">Momento especial para registar memórias com os noivos e os vossos entes queridos.</div>
+          <div class="tl-desc">Momento especial para registar memórias com os noivos e os convidados.</div>
         </div>
       </div>
       <div class="tl-item rv d3">
@@ -856,7 +856,7 @@ function enviarRSVP(){
   if(!nome){document.getElementById('f-nome').focus();document.getElementById('f-nome').style.borderColor='var(--green)';return;}
   
   // SUBSTITUA pelo número real: 258XXXXXXXXX
-  const tel='258870853220';
+  const tel='258823930780';
   
   let txt=`Olá! 👋%0A%0A${conf}%0A%0A*Nome:* ${encodeURIComponent(nome)}%0A*Convidados:* ${encodeURIComponent(num)}%0A*Evento:* Casamento de Felecidade %26 Sofio%0A*Data:* 14 de Agosto de 2026`;
   if(msg)txt+=`%0A%0A*Mensagem:* ${encodeURIComponent(msg)}`;
