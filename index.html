@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>Felecidade & Sofio — 14 Agosto 2026</title>
+<title>Felecidade & Sofio — 15 Agosto 2026</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,300;0,400;1,300;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Great+Vibes&family=Montserrat:wght@200;300;400;500&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -483,7 +483,7 @@ footer { background:var(--dark); padding: clamp(48px,8vw,72px) 24px; text-align:
     <span class="splash-amp">&amp;</span>
     Sofio Chilaúle
   </div>
-  <div class="splash-date">14 · Agosto · 2026</div>
+  <div class="splash-date">15 · Agosto · 2026</div>
   <div class="splash-cta">
     <button class="splash-btn" onclick="enterSite()">
       <span>▶</span> Abrir Convite
@@ -504,7 +504,7 @@ footer { background:var(--dark); padding: clamp(48px,8vw,72px) 24px; text-align:
       Sofio Chilaúle
     </div>
     <div class="hero-rule"></div>
-    <div class="hero-date">14 · Agosto · 2026 · Xai Xai</div>
+    <div class="hero-date">15 · Agosto · 2026 · Xai Xai</div>
     <div class="hero-verse">
       "Um pode ser vencido, mas juntos de mãos dadas com Deus<br>
       poderemos resistir a tudo."<br>
@@ -754,7 +754,7 @@ footer { background:var(--dark); padding: clamp(48px,8vw,72px) 24px; text-align:
 <footer>
   <span class="footer-names">Felecidade &amp; Sofio</span>
   <p class="footer-sub">
-    14 · Agosto · 2026 · Xai Xai, Moçambique<br>
+    15 · Agosto · 2026 · Xai Xai, Moçambique<br>
     Com a bênção de Deus e dos nossos pais
   </p>
 </footer>
@@ -762,11 +762,11 @@ footer { background:var(--dark); padding: clamp(48px,8vw,72px) 24px; text-align:
 <script>
 // ── PETALS ──
 const emojis=['🌸','🌺','🌷','✿'];
-for(let i=0;i<14;i++){
+for(let i=0;i<15;i++){
   const p=document.createElement('div');
   p.className='petal';
   p.textContent=emojis[i%emojis.length];
-  p.style.cssText=`left:${Math.random()*100}vw;font-size:${8+Math.random()*8}px;animation-duration:${10+Math.random()*14}s;animation-delay:${Math.random()*12}s;`;
+  p.style.cssText=`left:${Math.random()*100}vw;font-size:${8+Math.random()*8}px;animation-duration:${10+Math.random()*15}s;animation-delay:${Math.random()*12}s;`;
   document.body.appendChild(p);
 }
 
@@ -800,7 +800,7 @@ function toggleMusic(){
 
 // ── COUNTDOWN ──
 function tick(){
-  const diff=new Date('2026-08-14T10:00:00')-new Date();
+  const diff=new Date('2026-08-15T10:00:00')-new Date();
   if(diff<=0)return;
   document.getElementById('cd-d').textContent=String(Math.floor(diff/86400000)).padStart(3,'0');
   document.getElementById('cd-h').textContent=String(Math.floor(diff%86400000/3600000)).padStart(2,'0');
@@ -858,7 +858,7 @@ function enviarRSVP(){
   // SUBSTITUA pelo número real: 258XXXXXXXXX
   const tel='258823930780';
   
-  let txt=`Olá! 👋%0A%0A${conf}%0A%0A*Nome:* ${encodeURIComponent(nome)}%0A*Convidados:* ${encodeURIComponent(num)}%0A*Evento:* Casamento de Felecidade %26 Sofio%0A*Data:* 14 de Agosto de 2026`;
+  let txt=`Olá! 👋%0A%0A${conf}%0A%0A*Nome:* ${encodeURIComponent(nome)}%0A*Convidados:* ${encodeURIComponent(num)}%0A*Evento:* Casamento de Felecidade %26 Sofio%0A*Data:* 15 de Agosto de 2026`;
   if(msg)txt+=`%0A%0A*Mensagem:* ${encodeURIComponent(msg)}`;
   
   window.open(`https://wa.me/${tel}?text=${txt}`,'_blank');
